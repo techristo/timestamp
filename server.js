@@ -8,7 +8,7 @@ var app = express();
 // enable CORS (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
 // so that your API is remotely testable by FCC 
 var cors = require('cors');
-app.use(cors({optionsSuccessStatus: 200}));  // some legacy browsers choke on 204
+app.use(cors({optionSuccessStatus: 200}));  // some legacy browsers choke on 204
 
 // http://expressjs.com/en/starter/static-files.html
 app.use(express.static('public'));
@@ -30,6 +30,7 @@ app.get("/api/hello", function (req, res) {
 var listener = app.listen(process.env.PORT, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });
+
 
 let responseObject = {}
 
@@ -61,4 +62,13 @@ app.get('/api/timestamp', (request, response) => {
   responseObject['utc'] = new Date().toUTCString()
   
   response.json(responseObject)
+})
+
+let bodyParser = require('body-parser')
+
+app.post('/api/timestampform', bodyParser.urlencoded({ extended: false }), (request, response) => {
+  let input = request.body.input
+  let getUrl = '/api/timestamp/' + input
+  
+  response.redirect(getUrl)
 })
